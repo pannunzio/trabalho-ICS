@@ -6,6 +6,8 @@
 
 package tocadorMidi.engine.classePrincipal;
 
+import tocadorMidi.interfaces.FrameTocador;
+
 /**
  *
  * @author mariana
@@ -16,7 +18,11 @@ public class MainClass {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrameTocador().setVisible(true);
+            }
+        });
     }
     
 }
