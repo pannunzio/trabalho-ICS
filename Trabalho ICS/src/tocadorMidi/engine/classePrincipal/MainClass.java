@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package tabalhoIcs.classes.principal;
+package tocadorMidi.engine.classePrincipal;
 
 /**
  *
  * @author mariana
  */
-public class Main {
+public class MainClass {
 
     /**
      * @param args the command line arguments

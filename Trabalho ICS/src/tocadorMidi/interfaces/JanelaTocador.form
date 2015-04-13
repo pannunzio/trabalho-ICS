@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="jInternalFrame1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jInternalFrame1" min="-2" max="-2" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JInternalFrame" name="jInternalFrame1">
+      <Properties>
+        <Property name="visible" type="boolean" value="true"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="sliderAudio" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="labelFaixa" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="labelNomeDaFaixa" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="posicaoFaixa" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labelMetro" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labelAndamento" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="botaoPlay" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="botaoPause" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="labelFormulaCompasso" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="botaoStop" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="botaoSkipBackward" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="botaoSkipForward" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="sliderVolume" min="-2" pref="100" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="labelValorCompasso" alignment="1" min="-2" pref="265" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="labelValorMetro" alignment="1" min="-2" pref="265" max="-2" attributes="0"/>
+                                              <Component id="labelValorAndamento" alignment="1" min="-2" pref="265" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="labelArmaduraTonalidade" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="labelValorTonalidade" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelFaixa" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelNomeDaFaixa" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="sliderAudio" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="posicaoFaixa" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="botaoPlay" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="botaoPause" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="botaoStop" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="botaoSkipBackward" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="botaoSkipForward" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="sliderVolume" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="labelFormulaCompasso" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelValorCompasso" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="labelMetro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelValorMetro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="labelAndamento" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelValorAndamento" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="labelArmaduraTonalidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelValorTonalidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="15" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="labelFaixa">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Faixa:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelNomeDaFaixa">
+        </Component>
+        <Component class="javax.swing.JSlider" name="sliderAudio">
+          <BindingProperties>
+            <BindingProperty name="value" source="sliderAudio" sourcePath="${value}" target="sliderAudio" targetPath="value" updateStrategy="0" immediately="false">
+              <BindingParameter name="IGNORE_ADJUSTING" value="N"/>
+            </BindingProperty>
+          </BindingProperties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderAudioMousePressed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="posicaoFaixa">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="00:00:00"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="botaoPlay">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Play"/>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="selected" source="botaoPlay" sourcePath="${}" target="botaoPlay" targetPath="selected" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botaoPlayMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="botaoPause">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Pause"/>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="selected" source="botaoPause" target="botaoPause" targetPath="selected" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botaoPauseMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="botaoStop">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Stop"/>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="selected" source="botaoStop" target="botaoStop" targetPath="selected" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
+        </Component>
+        <Component class="javax.swing.JButton" name="botaoSkipBackward">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="selected" source="botaoSkipBackward" target="botaoSkipBackward" targetPath="selected" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
+        </Component>
+        <Component class="javax.swing.JButton" name="botaoSkipForward">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="selected" source="botaoSkipForward" target="botaoSkipForward" targetPath="selected" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
+        </Component>
+        <Component class="javax.swing.JSlider" name="sliderVolume">
+          <BindingProperties>
+            <BindingProperty name="value" source="sliderVolume" target="sliderVolume" targetPath="value" updateStrategy="0" immediately="false">
+              <BindingParameter name="IGNORE_ADJUSTING" value="N"/>
+            </BindingProperty>
+          </BindingProperties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelFormulaCompasso">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Formula de Compasso: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelMetro">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Metro: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelAndamento">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Andamento: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelArmaduraTonalidade">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Armadura de Tonalidade: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelValorCompasso">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="compasso"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelValorMetro">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="metro"/>
+          </Properties>
+          <Events>
+            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="labelValorMetroPropertyChange"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelValorAndamento">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="andamento"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelValorTonalidade">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="tonalidade"/>
+          </Properties>
+        </Component>
+        <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="jMenu1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="File"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="selecionarBancoMidi">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+B"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Selecionar Banco..."/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selecionarBancoMidiMouseClicked"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="selecionarArqMidi">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+M"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Selecionar Arq. MIDI..."/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selecionarArqMidiMouseClicked"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
