@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JFrame" name="jFrame1">
 
@@ -17,45 +17,11 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Menu class="javax.swing.JMenuBar" name="barraMenu">
-      <SubComponents>
-        <Menu class="javax.swing.JMenu" name="fileMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="File"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="itemImportarBanco">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+Ctrl+B"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Importar Banco MIDI..."/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="itemImportarBancoMouseClicked"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemImportarArq">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+Ctrl+A"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Importar Arq. MIDI..."/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="itemImportarArqMouseClicked"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-      </SubComponents>
-    </Menu>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="barraMenu"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -77,29 +43,11 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="sliderAudio" max="32767" attributes="0"/>
+                  <Component id="progressoAudio" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="labelFaixa" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="labelNomeDaFaixa" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="tempoFaixa" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="botaoPlay" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoPause" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoStop" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoSkipBkwrd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoSkipFwd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="sliderVolume" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -119,6 +67,27 @@
                           <Component id="labelValorTonalidade" alignment="1" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="botaoPlay" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="botaoPause" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="botaoStop" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="botaoSkipBkwrd" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="botaoSkipFwd" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="sliderVolume" min="-2" pref="77" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="abrirMidi" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -132,13 +101,13 @@
                   <Component id="labelFaixa" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelNomeDaFaixa" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="sliderAudio" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="progressoAudio" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="tempoFaixa" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="botaoPlay" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -168,6 +137,8 @@
                       <Component id="labelValorTonalidade" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="abrirMidi" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -186,17 +157,6 @@
       <Events>
         <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="labelNomeDaFaixaPropertyChange"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JSlider" name="sliderAudio">
-      <Events>
-        <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="sliderAudioMouseDragged"/>
-        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="sliderAudioPropertyChange"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="tempoFaixa">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="00:00:00"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="botaoPlay">
       <Properties>
@@ -287,6 +247,24 @@
     <Component class="javax.swing.JLabel" name="labelValorTonalidade">
       <Properties>
         <Property name="text" type="java.lang.String" value="tonalidade"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="abrirMidi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Abrir MIDI"/>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="selected" source="abrirMidi" sourcePath="${selected}" target="abrirMidi" targetPath="selected" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="abrirMidiMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JProgressBar" name="progressoAudio">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00:00:00"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="abrirArq" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="abrirArq" pref="444" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JFileChooser" name="abrirArq">
+      <Properties>
+        <Property name="autoscrolls" type="boolean" value="true"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Cursor Default"/>
+        </Property>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="acceptAllFileFilterUsed" source="abrirArq" sourcePath="${acceptAllFileFilterUsed}" target="abrirArq" targetPath="acceptAllFileFilterUsed" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="approveButtonText" source="abrirArq" sourcePath="${approveButtonText}" target="abrirArq" targetPath="approveButtonText" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="controlButtonsAreShown" source="abrirArq" sourcePath="${controlButtonsAreShown}" target="abrirArq" targetPath="controlButtonsAreShown" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="currentDirectory" source="abrirArq" sourcePath="${currentDirectory}" target="abrirArq" targetPath="currentDirectory" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="fileFilter" source="abrirArq" sourcePath="${fileFilter}" target="abrirArq" targetPath="fileFilter" updateStrategy="1" immediately="false"/>
+        <BindingProperty name="fileHidingEnabled" source="abrirArq" sourcePath="${fileHidingEnabled}" target="abrirArq" targetPath="fileHidingEnabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="fileSelectionMode" source="abrirArq" sourcePath="${fileSelectionMode}" target="abrirArq" targetPath="fileSelectionMode" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="fileView" source="abrirArq" sourcePath="${fileView}" target="abrirArq" targetPath="fileView" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedFile" source="abrirArq" sourcePath="${selectedFile}" target="abrirArq" targetPath="selectedFile" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="abrirArqActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>
