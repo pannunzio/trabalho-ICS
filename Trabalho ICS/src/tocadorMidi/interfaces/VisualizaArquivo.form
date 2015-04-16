@@ -60,6 +60,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="abrirArqActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="FileFilter filtro = new FileNameExtensionFilter(&quot;Arquivos MIDI&quot;, &quot;mid&quot;);&#xa;abrirArq.setFileFilter(filtro);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

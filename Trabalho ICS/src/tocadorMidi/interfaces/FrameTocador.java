@@ -12,13 +12,14 @@ import tocadorMidi.engine.actionListeners.BotaoSkipBackward;
 import tocadorMidi.engine.actionListeners.BotaoSkipForward;
 import tocadorMidi.engine.actionListeners.BotaoStop;
 import tocadorMidi.engine.actionListeners.SliderVolume;
+import tocadorMidi.engine.beans.ArquivoMidi;
 
 /**
  *
  * @author mariana
  */
 public class FrameTocador extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form FrameTocadoe
      */
@@ -266,7 +267,7 @@ public class FrameTocador extends javax.swing.JFrame {
     }//GEN-LAST:event_labelNomeDaFaixaPropertyChange
 
     private void botaoPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPlayMouseClicked
-        BotaoPlay acao = new BotaoPlay();
+        //BotaoPlay acao = new BotaoPlay();
     }//GEN-LAST:event_botaoPlayMouseClicked
 
     private void botaoPauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPauseMouseClicked
@@ -291,7 +292,8 @@ public class FrameTocador extends javax.swing.JFrame {
 
     private void abrirMidiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMidiMouseClicked
         VisualizaArquivo abrir = new VisualizaArquivo(this, rootPaneCheckingEnabled);
-        abrir.main();
+        abrir.run();
+        System.out.println("testeee");
     }//GEN-LAST:event_abrirMidiMouseClicked
 
 
