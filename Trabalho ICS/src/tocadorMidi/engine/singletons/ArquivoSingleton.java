@@ -6,6 +6,8 @@
 package tocadorMidi.engine.singletons;
 
 import java.io.File;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
 
 /**
  *
@@ -13,7 +15,12 @@ import java.io.File;
  */
 public class ArquivoSingleton {
     private static ArquivoSingleton instance = null;
+    
     private static File arqMidi;
+    private Sequencer sequenciador;
+    private Sequence sequencia;
+    private Long tick;
+    private Long microssegundo;
     
     protected ArquivoSingleton(){
     }
@@ -31,5 +38,37 @@ public class ArquivoSingleton {
 
     public void setArqMidi(File arqMidi) {
         this.arqMidi = arqMidi;
+    }
+
+    public Sequencer getSequenciador() {
+        return sequenciador;
+    }
+
+    public void setSequenciador(Sequencer sequenciador) {
+        this.sequenciador = sequenciador;
+    }
+
+    public Sequence getSequencia() {
+        return sequencia;
+    }
+
+    public void setSequencia(Sequence sequencia) {
+        this.sequencia = sequencia;
+    }
+
+    public Long getTick() {
+        return tick;
+    }
+
+    public void setTick(Long tick) {
+        this.tick = tick;
+    }
+
+    public Long getMicrossegundo() {
+        return microssegundo;
+    }
+
+    public void setMicrossegundo(Long microssegundo) {
+        this.microssegundo = microssegundo;
     }
 }

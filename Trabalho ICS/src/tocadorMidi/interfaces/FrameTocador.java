@@ -7,6 +7,11 @@
 package tocadorMidi.interfaces;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.UIManager;
 import tocadorMidi.engine.actionListeners.BotaoPause;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
@@ -281,20 +286,36 @@ public class FrameTocador extends javax.swing.JFrame {
         botaoPlay.setEnabled(false);
         botaoPause.setEnabled(true);
         botaoStop.setEnabled(true);
-        tocaMidi obj = new tocaMidi();
-        obj.play();
+        
+        BotaoPlay acao = new BotaoPlay();
+        try {
+            acao.play();
+        } catch (InvalidMidiDataException ex) {
+            Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MidiUnavailableException ex) {
+            Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botaoPlayMouseClicked
 
     private void botaoPauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPauseMouseClicked
         botaoPlay.setEnabled(true);
         botaoPause.setEnabled(false);
         botaoStop.setEnabled(false);
+        
+        BotaoPause acao = new BotaoPause();
+        acao.Pause();
+        
     }//GEN-LAST:event_botaoPauseMouseClicked
 
     private void botaoStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoStopMouseClicked
         botaoPlay.setEnabled(true);
         botaoPause.setEnabled(false);
         botaoStop.setEnabled(false);
+        
+        BotaoStop acao = new BotaoStop();
+        acao.Stop();
     }//GEN-LAST:event_botaoStopMouseClicked
 
     private void botaoSkipBkwrdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSkipBkwrdMouseClicked

@@ -6,10 +6,28 @@
 
 package tocadorMidi.engine.actionListeners;
 
+import javax.sound.midi.MidiSystem;
+import tocadorMidi.engine.singletons.ArquivoSingleton;
+
 /**
  *
  * @author mariana
  */
 public class BotaoPause {
+    public BotaoPause(){
+        
+    }
     
+    public void Pause(){
+        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        try {
+            
+            obj.setTick(obj.getSequenciador().getTickPosition());
+            obj.setMicrossegundo(obj.getSequenciador().getMicrosecondPosition());
+            obj.getSequenciador().stop();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
