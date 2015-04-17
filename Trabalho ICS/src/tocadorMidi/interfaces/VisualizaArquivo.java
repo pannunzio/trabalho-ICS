@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
-import tocadorMidi.engine.beans.ArquivoMidi;
+import tocadorMidi.engine.classePrincipal.MainClass;
 import tocadorMidi.engine.tocaMidi.tocaMidi;
 
 /**
@@ -19,9 +19,38 @@ import tocadorMidi.engine.tocaMidi.tocaMidi;
  * @author mqueiroz
  */
 public class VisualizaArquivo extends javax.swing.JDialog {
+    private File arquivo;
+    private FrameTocador frame;
+    private Boolean isFile;
+    
     public VisualizaArquivo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIsFile(false);
+    }
+
+    public File getArquivo() {
+        return abrirArq.getSelectedFile();
+    }
+    
+    public void setArquivo(File newArquivo) {
+        this.arquivo = newArquivo;
+    }
+
+    public FrameTocador getFrame() {
+        return frame;
+    }
+
+    public void setFrame(FrameTocador frame) {
+        this.frame = frame;
+    }
+
+    public Boolean isIsFile() {
+        return isFile;
+    }
+
+    public void setIsFile(Boolean isFile) {
+        this.isFile = isFile;
     }
 
     @SuppressWarnings("unchecked")
@@ -55,6 +84,15 @@ public class VisualizaArquivo extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, abrirArq, org.jdesktop.beansbinding.ELProperty.create("${selectedFile}"), abrirArq, org.jdesktop.beansbinding.BeanProperty.create("selectedFile"));
         bindingGroup.addBinding(binding);
 
+        abrirArq.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+                abrirArqAncestorRemoved(evt);
+            }
+        });
         abrirArq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 abrirArqActionPerformed(evt);
@@ -85,20 +123,19 @@ public class VisualizaArquivo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void abrirArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArqActionPerformed
-        if(evt.getActionCommand().startsWith("Approve")) {
-            ArquivoMidi arq = new ArquivoMidi();
-            arq.setArquivoMidi(abrirArq.getSelectedFile());
-            tocaMidi teste = new tocaMidi();
-            teste.play(abrirArq.getSelectedFile());
-            System.out.println(arq.getArquivoMidi().getName());
-            this.dispose();            
-        } else if (evt.getActionCommand().startsWith("Cancel")){
-            this.dispose();
-        }
+        this.setIsFile(true);
+        this.dispose();
     }//GEN-LAST:event_abrirArqActionPerformed
+
+    private void abrirArqAncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_abrirArqAncestorRemoved
+        if(this.isFile.booleanValue() == true){
+            this.setArquivo(abrirArq.getSelectedFile());
+            System.out.println(this.getArquivo().getName());
+            System.out.println(evt.getAncestor().toString() + " ancestor");
+        }
+    }//GEN-LAST:event_abrirArqAncestorRemoved
     
-    public void run() {
-        
+    public void run(FrameTocador frameToc) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 VisualizaArquivo dialog = new VisualizaArquivo(new javax.swing.JFrame(), true);
@@ -111,6 +148,7 @@ public class VisualizaArquivo extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+        this.setFrame(frameToc);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

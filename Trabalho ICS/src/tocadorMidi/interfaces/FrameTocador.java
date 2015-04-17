@@ -6,20 +6,21 @@
 
 package tocadorMidi.interfaces;
 
+import java.io.File;
+import javax.swing.UIManager;
 import tocadorMidi.engine.actionListeners.BotaoPause;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
 import tocadorMidi.engine.actionListeners.BotaoSkipBackward;
 import tocadorMidi.engine.actionListeners.BotaoSkipForward;
 import tocadorMidi.engine.actionListeners.BotaoStop;
 import tocadorMidi.engine.actionListeners.SliderVolume;
-import tocadorMidi.engine.beans.ArquivoMidi;
 
 /**
  *
  * @author mariana
  */
 public class FrameTocador extends javax.swing.JFrame {
-    
+    private File arquivo;
     /**
      * Creates new form FrameTocadoe
      */
@@ -27,6 +28,17 @@ public class FrameTocador extends javax.swing.JFrame {
         initComponents();
     }
 
+    public File getArquivo() {
+        return arquivo;
+    }
+
+    public void setArquivo(File arquivo) {
+        if(arquivo != null){
+            this.arquivo = arquivo;
+            System.out.println(arquivo.getName());
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -152,6 +164,14 @@ public class FrameTocador extends javax.swing.JFrame {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, abrirMidi, org.jdesktop.beansbinding.ELProperty.create("${selected}"), abrirMidi, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
+        abrirMidi.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                abrirMidiFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                abrirMidiFocusLost(evt);
+            }
+        });
         abrirMidi.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 abrirMidiMouseClicked(evt);
@@ -254,6 +274,17 @@ public class FrameTocador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void runApp(File arqMidi){
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
+        setArquivo(arqMidi);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrameTocador().setVisible(true);
+            }
+        });
+        System.out.println("adkjalksjdh");
+    }
+    
     private void labelValorCompassoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_labelValorCompassoPropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_labelValorCompassoPropertyChange
@@ -267,15 +298,21 @@ public class FrameTocador extends javax.swing.JFrame {
     }//GEN-LAST:event_labelNomeDaFaixaPropertyChange
 
     private void botaoPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPlayMouseClicked
-        //BotaoPlay acao = new BotaoPlay();
+        botaoPlay.setEnabled(false);
+        botaoPause.setEnabled(true);
+        botaoStop.setEnabled(true);
     }//GEN-LAST:event_botaoPlayMouseClicked
 
     private void botaoPauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPauseMouseClicked
-        BotaoPause acao = new BotaoPause();
+        botaoPlay.setEnabled(true);
+        botaoPause.setEnabled(false);
+        botaoStop.setEnabled(false);
     }//GEN-LAST:event_botaoPauseMouseClicked
 
     private void botaoStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoStopMouseClicked
-        BotaoStop acao = new BotaoStop();
+        botaoPlay.setEnabled(true);
+        botaoPause.setEnabled(false);
+        botaoStop.setEnabled(false);
     }//GEN-LAST:event_botaoStopMouseClicked
 
     private void botaoSkipBkwrdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSkipBkwrdMouseClicked
@@ -292,9 +329,19 @@ public class FrameTocador extends javax.swing.JFrame {
 
     private void abrirMidiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMidiMouseClicked
         VisualizaArquivo abrir = new VisualizaArquivo(this, rootPaneCheckingEnabled);
-        abrir.run();
-        System.out.println("testeee");
+        abrir.run(this);
     }//GEN-LAST:event_abrirMidiMouseClicked
+
+    private void abrirMidiFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abrirMidiFocusLost
+        System.out.println("i feel looooove");        // TODO add your handling code here:
+    }//GEN-LAST:event_abrirMidiFocusLost
+
+    private void abrirMidiFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abrirMidiFocusGained
+        System.out.println(evt.paramString());
+        if (evt.getOppositeComponent() == null){
+            System.out.println(evt.getComponent());
+        }
+    }//GEN-LAST:event_abrirMidiFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -257,6 +257,8 @@
         <BindingProperty name="selected" source="abrirMidi" sourcePath="${selected}" target="abrirMidi" targetPath="selected" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="abrirMidiFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="abrirMidiFocusLost"/>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="abrirMidiMouseClicked"/>
       </Events>
     </Component>

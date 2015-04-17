@@ -6,8 +6,8 @@
 
 package tocadorMidi.engine.classePrincipal;
 
+import java.io.File;
 import javax.swing.UIManager;
-import tocadorMidi.engine.beans.ArquivoMidi;
 import tocadorMidi.interfaces.FrameTocador;
 
 /**
@@ -15,13 +15,13 @@ import tocadorMidi.interfaces.FrameTocador;
  * @author mariana
  */
 public class MainClass {
-    private ArquivoMidi arqMidi;
+    static private File arqMidi;
 
-    public ArquivoMidi getArqMidi() {
+    public File getArqMidi() {
         return arqMidi;
     }
 
-    public void setArqMidi(ArquivoMidi arqMidi) {
+    public void setArqMidi(File arqMidi) {
         this.arqMidi = arqMidi;
     }
     /**
@@ -29,12 +29,9 @@ public class MainClass {
      */
     
     public static void main(String[] args) {
-        UIManager.put("swing.boldMetal", Boolean.FALSE); 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrameTocador().setVisible(true);
-            }
-        });
+        FrameTocador app = new FrameTocador();
+        
+        app.runApp(arqMidi);
     }
     
 }

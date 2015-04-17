@@ -7,7 +7,6 @@
 package tocadorMidi.engine.actionListeners;
 
 import java.io.File;
-import tocadorMidi.engine.beans.ArquivoMidi;
 import tocadorMidi.engine.classePrincipal.MainClass;
 import tocadorMidi.engine.tocaMidi.tocaMidi;
 
