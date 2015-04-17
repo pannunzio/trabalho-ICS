@@ -12,6 +12,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import tocadorMidi.engine.singletons.ArquivoSingleton;
 
 /**
  *
@@ -19,8 +20,11 @@ import javax.sound.midi.Sequencer;
  */
 public class tocaMidi {
 
-    public void play(File arqmidi) {
+    public void play() {
         System.out.println("TESTEEEE ASLKJDHAFKDJ");
+        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        File arqmidi = obj.getArqMidi();
+        
         Sequencer sequenciador;
         Sequence sequencia;
 

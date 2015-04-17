@@ -12,45 +12,17 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
 import tocadorMidi.engine.classePrincipal.MainClass;
+import tocadorMidi.engine.singletons.ArquivoSingleton;
 import tocadorMidi.engine.tocaMidi.tocaMidi;
 
 /**
  *
  * @author mqueiroz
  */
-public class VisualizaArquivo extends javax.swing.JDialog {
-    private File arquivo;
-    private FrameTocador frame;
-    private Boolean isFile;
-    
+public class VisualizaArquivo extends javax.swing.JDialog {   
     public VisualizaArquivo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setIsFile(false);
-    }
-
-    public File getArquivo() {
-        return abrirArq.getSelectedFile();
-    }
-    
-    public void setArquivo(File newArquivo) {
-        this.arquivo = newArquivo;
-    }
-
-    public FrameTocador getFrame() {
-        return frame;
-    }
-
-    public void setFrame(FrameTocador frame) {
-        this.frame = frame;
-    }
-
-    public Boolean isIsFile() {
-        return isFile;
-    }
-
-    public void setIsFile(Boolean isFile) {
-        this.isFile = isFile;
     }
 
     @SuppressWarnings("unchecked")
@@ -123,19 +95,18 @@ public class VisualizaArquivo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void abrirArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArqActionPerformed
-        this.setIsFile(true);
+        if(evt.getActionCommand().startsWith("Approve")){
+            ArquivoSingleton obj = ArquivoSingleton.getInstance();
+            obj.setArqMidi(abrirArq.getSelectedFile());
+        }
         this.dispose();
     }//GEN-LAST:event_abrirArqActionPerformed
 
     private void abrirArqAncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_abrirArqAncestorRemoved
-        if(this.isFile.booleanValue() == true){
-            this.setArquivo(abrirArq.getSelectedFile());
-            System.out.println(this.getArquivo().getName());
-            System.out.println(evt.getAncestor().toString() + " ancestor");
-        }
+        
     }//GEN-LAST:event_abrirArqAncestorRemoved
     
-    public void run(FrameTocador frameToc) {
+    public void run() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 VisualizaArquivo dialog = new VisualizaArquivo(new javax.swing.JFrame(), true);
@@ -148,7 +119,6 @@ public class VisualizaArquivo extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
-        this.setFrame(frameToc);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
