@@ -22,7 +22,6 @@ public class BotaoPause {
         ArquivoSingleton obj = ArquivoSingleton.getInstance();
         try {
             
-            obj.setTick(obj.getSequenciador().getTickPosition());
             obj.setMicrossegundo(obj.getSequenciador().getMicrosecondPosition());
             obj.getSequenciador().stop();
 

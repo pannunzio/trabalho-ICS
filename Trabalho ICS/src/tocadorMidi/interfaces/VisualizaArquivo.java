@@ -13,7 +13,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
 import tocadorMidi.engine.classePrincipal.MainClass;
 import tocadorMidi.engine.singletons.ArquivoSingleton;
-import tocadorMidi.engine.tocaMidi.tocaMidi;
 
 /**
  *

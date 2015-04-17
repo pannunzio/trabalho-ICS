@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package tocadorMidi.interfaces;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.ShortMessage;
+import javax.swing.JSlider;
 import javax.swing.UIManager;
 import tocadorMidi.engine.actionListeners.BotaoPause;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
@@ -19,13 +21,14 @@ import tocadorMidi.engine.actionListeners.BotaoSkipBackward;
 import tocadorMidi.engine.actionListeners.BotaoSkipForward;
 import tocadorMidi.engine.actionListeners.BotaoStop;
 import tocadorMidi.engine.actionListeners.SliderVolume;
-import tocadorMidi.engine.tocaMidi.tocaMidi;
+import tocadorMidi.engine.singletons.ArquivoSingleton;
 
 /**
  *
  * @author mariana
  */
 public class FrameTocador extends javax.swing.JFrame {
+
     /**
      * Creates new form FrameTocadoe
      */
@@ -62,7 +65,9 @@ public class FrameTocador extends javax.swing.JFrame {
         labelValorTonalidade = new javax.swing.JLabel();
         abrirMidi = new javax.swing.JButton();
         progressoAudio = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+        labelTempoMusica = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        labelInstanteMusica = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -79,12 +84,10 @@ public class FrameTocador extends javax.swing.JFrame {
 
         labelFaixa.setText("Faixa: ");
 
-        labelNomeDaFaixa.setText("Nome_da_faixa.MIDI");
-        labelNomeDaFaixa.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                labelNomeDaFaixaPropertyChange(evt);
-            }
-        });
+        labelNomeDaFaixa.setText("nome_do_arquivo.mid");
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labelNomeDaFaixa, org.jdesktop.beansbinding.ELProperty.create("${selected}"), labelNomeDaFaixa, org.jdesktop.beansbinding.BeanProperty.create("labelFor"));
+        bindingGroup.addBinding(binding);
 
         botaoPlay.setText("Play");
         botaoPlay.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -121,6 +124,14 @@ public class FrameTocador extends javax.swing.JFrame {
             }
         });
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, sliderVolume, org.jdesktop.beansbinding.ELProperty.create("${value}"), sliderVolume, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        sliderVolume.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderVolumeStateChanged(evt);
+            }
+        });
         sliderVolume.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 sliderVolumeMouseDragged(evt);
@@ -155,61 +166,77 @@ public class FrameTocador extends javax.swing.JFrame {
 
         abrirMidi.setText("Abrir MIDI");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, abrirMidi, org.jdesktop.beansbinding.ELProperty.create("${selected}"), abrirMidi, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, abrirMidi, org.jdesktop.beansbinding.ELProperty.create("${selected}"), abrirMidi, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
+        abrirMidi.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                abrirMidiFocusGained(evt);
+            }
+        });
         abrirMidi.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 abrirMidiMouseClicked(evt);
             }
         });
 
-        jLabel1.setText("00:00:00");
+        labelTempoMusica.setText("00:00:00");
+
+        jLabel2.setText("/");
+
+        labelInstanteMusica.setText("00:00:00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(progressoAudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelFaixa)
-                        .addGap(18, 18, 18)
-                        .addComponent(labelNomeDaFaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelMetro)
-                            .addComponent(labelAndamento)
-                            .addComponent(labelArmaduraTonalidade)
-                            .addComponent(labelFormulaCompasso))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(progressoAudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(labelValorCompasso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(labelValorMetro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelValorAndamento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelValorTonalidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(labelFaixa)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelNomeDaFaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelMetro)
+                                    .addComponent(labelAndamento)
+                                    .addComponent(labelArmaduraTonalidade)
+                                    .addComponent(labelFormulaCompasso))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(2, 2, 2)
+                                        .addComponent(labelValorCompasso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(labelValorMetro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelValorAndamento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelValorTonalidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botaoPlay)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoPause)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoStop)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoSkipBkwrd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoSkipFwd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(sliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(labelInstanteMusica)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelTempoMusica))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(botaoPlay)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botaoPause)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botaoStop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botaoSkipBkwrd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botaoSkipFwd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(abrirMidi, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(abrirMidi)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,7 +249,10 @@ public class FrameTocador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(progressoAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTempoMusica)
+                    .addComponent(jLabel2)
+                    .addComponent(labelInstanteMusica))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -260,33 +290,30 @@ public class FrameTocador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void runApp(){
+    public void runApp() {
         UIManager.put("swing.boldMetal", Boolean.FALSE);;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FrameTocador().setVisible(true);
             }
         });
-        System.out.println("adkjalksjdh");
     }
-    
+
     private void labelValorCompassoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_labelValorCompassoPropertyChange
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_labelValorCompassoPropertyChange
 
     private void labelValorMetroPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_labelValorMetroPropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_labelValorMetroPropertyChange
 
-    private void labelNomeDaFaixaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_labelNomeDaFaixaPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_labelNomeDaFaixaPropertyChange
-
     private void botaoPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPlayMouseClicked
-        botaoPlay.setEnabled(false);
-        botaoPause.setEnabled(true);
-        botaoStop.setEnabled(true);
-        
+        if (ArquivoSingleton.getInstance().getArqMidi() != null) {
+            botaoPlay.setEnabled(false);
+            botaoPause.setEnabled(true);
+            botaoStop.setEnabled(true);
+        }
+
         BotaoPlay acao = new BotaoPlay();
         try {
             acao.play();
@@ -300,20 +327,24 @@ public class FrameTocador extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoPlayMouseClicked
 
     private void botaoPauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPauseMouseClicked
-        botaoPlay.setEnabled(true);
-        botaoPause.setEnabled(false);
-        botaoStop.setEnabled(false);
-        
+        if (ArquivoSingleton.getInstance().getArqMidi() != null) {
+            botaoPlay.setEnabled(true);
+            botaoPause.setEnabled(false);
+            botaoStop.setEnabled(false);
+        }
+
         BotaoPause acao = new BotaoPause();
         acao.Pause();
-        
+
     }//GEN-LAST:event_botaoPauseMouseClicked
 
     private void botaoStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoStopMouseClicked
-        botaoPlay.setEnabled(true);
-        botaoPause.setEnabled(false);
-        botaoStop.setEnabled(false);
-        
+        if (ArquivoSingleton.getInstance().getArqMidi() != null) {
+            botaoPlay.setEnabled(true);
+            botaoPause.setEnabled(false);
+            botaoStop.setEnabled(false);
+        }
+
         BotaoStop acao = new BotaoStop();
         acao.Stop();
     }//GEN-LAST:event_botaoStopMouseClicked
@@ -335,6 +366,31 @@ public class FrameTocador extends javax.swing.JFrame {
         abrir.run();
     }//GEN-LAST:event_abrirMidiMouseClicked
 
+    private void sliderVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderVolumeStateChanged
+        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        JSlider source = (JSlider) evt.getSource();
+        if (!source.getValueIsAdjusting()) {
+            int valor = (int) source.getValue();
+            ShortMessage mensagemDeVolume = new ShortMessage();
+            for (int i = 0; i < 16; i++) {
+                try {
+                    mensagemDeVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, valor);
+                    //obj.getReceptor().send(mensagemDeVolume, -1);
+                } catch (InvalidMidiDataException e1) {
+                }
+            }
+            obj.setVolumeAtual(valor);
+        }
+    }//GEN-LAST:event_sliderVolumeStateChanged
+
+    private void abrirMidiFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abrirMidiFocusGained
+        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        if (obj.getArqMidi() != null) {
+            labelTempoMusica.setText(obj.getTempoFormatado());
+            labelNomeDaFaixa.setText(obj.getArqMidi().getName());
+        }
+    }//GEN-LAST:event_abrirMidiFocusGained
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abrirMidi;
@@ -344,13 +400,15 @@ public class FrameTocador extends javax.swing.JFrame {
     private javax.swing.JButton botaoSkipFwd;
     private javax.swing.JButton botaoStop;
     private javax.swing.JFrame jFrame1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelAndamento;
     private javax.swing.JLabel labelArmaduraTonalidade;
     private javax.swing.JLabel labelFaixa;
     private javax.swing.JLabel labelFormulaCompasso;
+    private javax.swing.JLabel labelInstanteMusica;
     private javax.swing.JLabel labelMetro;
     private javax.swing.JLabel labelNomeDaFaixa;
+    private javax.swing.JLabel labelTempoMusica;
     private javax.swing.JLabel labelValorAndamento;
     private javax.swing.JLabel labelValorCompasso;
     private javax.swing.JLabel labelValorMetro;

@@ -14,7 +14,6 @@ import tocadorMidi.engine.singletons.ArquivoSingleton;
 public class BotaoStop {
 
     public BotaoStop() {
-
     }
 
     public void Stop() {
@@ -22,7 +21,6 @@ public class BotaoStop {
         try {
 
             obj.setMicrossegundo(null);
-            obj.setTick(null);
             obj.getSequenciador().stop();
 
         } catch (Exception e) {

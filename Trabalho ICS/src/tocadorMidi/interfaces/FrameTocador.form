@@ -41,52 +41,61 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="progressoAudio" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="labelFaixa" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="labelNomeDaFaixa" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelMetro" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelAndamento" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelArmaduraTonalidade" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelFormulaCompasso" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                              <Component id="labelValorCompasso" max="32767" attributes="0"/>
+                          <Component id="progressoAudio" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="labelFaixa" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="labelNomeDaFaixa" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="labelValorMetro" alignment="1" max="32767" attributes="0"/>
-                          <Component id="labelValorAndamento" alignment="1" max="32767" attributes="0"/>
-                          <Component id="labelValorTonalidade" alignment="1" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="labelMetro" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelAndamento" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelArmaduraTonalidade" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelFormulaCompasso" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                      <Component id="labelValorCompasso" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="labelValorMetro" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="labelValorAndamento" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="labelValorTonalidade" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="botaoPlay" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="botaoPause" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="botaoStop" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="botaoSkipBkwrd" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="botaoSkipFwd" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="sliderVolume" min="-2" pref="77" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="labelInstanteMusica" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="labelTempoMusica" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="botaoPlay" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoPause" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoStop" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoSkipBkwrd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botaoSkipFwd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="sliderVolume" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="abrirMidi" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="114" max="32767" attributes="0"/>
+                      <Component id="abrirMidi" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -104,7 +113,11 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="progressoAudio" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="labelTempoMusica" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelInstanteMusica" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
@@ -152,11 +165,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="labelNomeDaFaixa">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nome_da_faixa.MIDI"/>
+        <Property name="text" type="java.lang.String" value="nome_do_arquivo.mid"/>
       </Properties>
-      <Events>
-        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="labelNomeDaFaixaPropertyChange"/>
-      </Events>
+      <BindingProperties>
+        <BindingProperty name="labelFor" source="labelNomeDaFaixa" sourcePath="${selected}" target="labelNomeDaFaixa" targetPath="labelFor" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
     <Component class="javax.swing.JButton" name="botaoPlay">
       <Properties>
@@ -199,7 +212,13 @@
       </Events>
     </Component>
     <Component class="javax.swing.JSlider" name="sliderVolume">
+      <BindingProperties>
+        <BindingProperty name="value" source="sliderVolume" sourcePath="${value}" target="sliderVolume" targetPath="value" updateStrategy="0" immediately="false">
+          <BindingParameter name="IGNORE_ADJUSTING" value="N"/>
+        </BindingProperty>
+      </BindingProperties>
       <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderVolumeStateChanged"/>
         <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="sliderVolumeMouseDragged"/>
       </Events>
     </Component>
@@ -257,12 +276,23 @@
         <BindingProperty name="selected" source="abrirMidi" sourcePath="${selected}" target="abrirMidi" targetPath="selected" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="abrirMidiFocusGained"/>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="abrirMidiMouseClicked"/>
       </Events>
     </Component>
     <Component class="javax.swing.JProgressBar" name="progressoAudio">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="labelTempoMusica">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="00:00:00"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="/"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelInstanteMusica">
       <Properties>
         <Property name="text" type="java.lang.String" value="00:00:00"/>
       </Properties>

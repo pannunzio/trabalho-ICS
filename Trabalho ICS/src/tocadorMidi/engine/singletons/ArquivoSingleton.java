@@ -6,6 +6,12 @@
 package tocadorMidi.engine.singletons;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
@@ -14,19 +20,23 @@ import javax.sound.midi.Sequencer;
  * @author mqueiroz
  */
 public class ArquivoSingleton {
+
     private static ArquivoSingleton instance = null;
-    
+
     private static File arqMidi;
     private Sequencer sequenciador;
     private Sequence sequencia;
     private Long tick;
     private Long microssegundo;
-    
-    protected ArquivoSingleton(){
+    private Integer volumeAtual;
+    private Receiver receptor;
+    private String tempoFormatado;
+
+    protected ArquivoSingleton() {
     }
-    
-    public static ArquivoSingleton getInstance(){
-        if(instance == null){
+
+    public static ArquivoSingleton getInstance() {
+        if (instance == null) {
             instance = new ArquivoSingleton();
         }
         return instance;
@@ -70,5 +80,49 @@ public class ArquivoSingleton {
 
     public void setMicrossegundo(Long microssegundo) {
         this.microssegundo = microssegundo;
+    }
+
+    public Integer getVolumeAtual() {
+        return volumeAtual;
+    }
+
+    public void setVolumeAtual(Integer volumeAtual) {
+        this.volumeAtual = volumeAtual;
+    }
+
+    public Receiver getReceptor() {
+        return receptor;
+    }
+
+    public void setReceptor(Receiver receptor) {
+        this.receptor = receptor;
+    }
+
+    public String getTempoFormatado() {
+        return tempoFormatado;
+    }
+
+    public void setTempoFormatado(String tempoFormatado) {
+        this.tempoFormatado = tempoFormatado;
+    }
+
+    public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
+        if (this.getArqMidi() != null) {
+            Long milissegundos = null;
+            Long minutos = null;
+            Long segundos = null;
+            
+            this.setSequencia(MidiSystem.getSequence(this.getArqMidi()));
+
+            this.setSequenciador(MidiSystem.getSequencer());
+            this.getSequenciador().setSequence(this.getSequencia());
+            this.getSequenciador().open();
+            
+            segundos = TimeUnit.MILLISECONDS.toSeconds(milissegundos);
+            minutos = TimeUnit.MILLISECONDS.toMinutes(milissegundos);
+            milissegundos -= TimeUnit.SECONDS.toMillis(segundos);
+            
+            setTempoFormatado(String.format("%02d:%02d:%d", minutos, segundos, milissegundos));
+        }
     }
 }
