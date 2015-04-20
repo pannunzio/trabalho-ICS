@@ -25,17 +25,11 @@ public class BotaoPlay {
 
     public void play() throws InvalidMidiDataException, IOException, MidiUnavailableException {
         ArquivoSingleton obj = ArquivoSingleton.getInstance();
-        SliderVolume volume = new SliderVolume();
         try {
             if (obj.getArqMidi() != null) {
                 obj.setSequencia(MidiSystem.getSequence(obj.getArqMidi()));
             }
             
-            if(obj.getVolumeAtual() == null)
-                volume.iniciaVolume(75);
-            else
-                volume.iniciaVolume(obj.getVolumeAtual());
-
             obj.setSequenciador(MidiSystem.getSequencer());
             obj.getSequenciador().setSequence(obj.getSequencia());
             obj.getSequenciador().open();

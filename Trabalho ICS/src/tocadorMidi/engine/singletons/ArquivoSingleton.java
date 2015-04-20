@@ -14,6 +14,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
 
 /**
  *
@@ -108,21 +109,43 @@ public class ArquivoSingleton {
 
     public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
         if (this.getArqMidi() != null) {
-            Long milissegundos = null;
-            Long minutos = null;
-            Long segundos = null;
-            
+//            Long milissegundos = null;
+//            Long minutos = null;
+//            Long segundos = null;
+
             this.setSequencia(MidiSystem.getSequence(this.getArqMidi()));
 
             this.setSequenciador(MidiSystem.getSequencer());
             this.getSequenciador().setSequence(this.getSequencia());
             this.getSequenciador().open();
-            
-            segundos = TimeUnit.MILLISECONDS.toSeconds(milissegundos);
-            minutos = TimeUnit.MILLISECONDS.toMinutes(milissegundos);
-            milissegundos -= TimeUnit.SECONDS.toMillis(segundos);
-            
-            setTempoFormatado(String.format("%02d:%02d:%d", minutos, segundos, milissegundos));
+//
+//            segundos = TimeUnit.MILLISECONDS.toSeconds(milissegundos);
+//            minutos = TimeUnit.MILLISECONDS.toMinutes(milissegundos);
+//            milissegundos -= TimeUnit.SECONDS.toMillis(segundos);
+//
+//            setTempoFormatado(String.format("%02d:%02d:%d", minutos, segundos, milissegundos));
+        }
+    }
+
+    public void initVolume() {
+        this.setVolumeAtual(75);
+        this.setReceptor(null);
+    }
+
+    public void configuraVolume() throws MidiUnavailableException {
+        this.setReceptor(this.getSequenciador().getTransmitters().iterator().next().getReceiver());
+        this.getSequenciador().getTransmitter().setReceiver(this.getReceptor());
+    }
+
+    public void inicializaVolume() {
+        ShortMessage msgVolume = new ShortMessage();
+        for (int i = 0; i < 16; i++) {
+            try {
+                msgVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, this.getVolumeAtual());
+                this.getReceptor().send(msgVolume, -1);
+            } catch (InvalidMidiDataException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ package tocadorMidi.engine.classePrincipal;
 
 import java.io.File;
 import javax.swing.UIManager;
+import tocadorMidi.engine.singletons.ArquivoSingleton;
 import tocadorMidi.interfaces.FrameTocador;
 
 /**
@@ -20,8 +21,8 @@ public class MainClass {
      */
     
     public static void main(String[] args) {
+        ArquivoSingleton.getInstance().initVolume();
         FrameTocador app = new FrameTocador();
         app.runApp();
     }
-    
 }

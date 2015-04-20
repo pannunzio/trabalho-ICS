@@ -20,7 +20,6 @@ import tocadorMidi.engine.actionListeners.BotaoPlay;
 import tocadorMidi.engine.actionListeners.BotaoSkipBackward;
 import tocadorMidi.engine.actionListeners.BotaoSkipForward;
 import tocadorMidi.engine.actionListeners.BotaoStop;
-import tocadorMidi.engine.actionListeners.SliderVolume;
 import tocadorMidi.engine.singletons.ArquivoSingleton;
 
 /**
@@ -308,7 +307,8 @@ public class FrameTocador extends javax.swing.JFrame {
     }//GEN-LAST:event_labelValorMetroPropertyChange
 
     private void botaoPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPlayMouseClicked
-        if (ArquivoSingleton.getInstance().getArqMidi() != null) {
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
+        if (instance.getArqMidi() != null) {
             botaoPlay.setEnabled(false);
             botaoPause.setEnabled(true);
             botaoStop.setEnabled(true);
@@ -317,6 +317,8 @@ public class FrameTocador extends javax.swing.JFrame {
         BotaoPlay acao = new BotaoPlay();
         try {
             acao.play();
+            instance.configuraVolume();
+            instance.inicializaVolume();
         } catch (InvalidMidiDataException ex) {
             Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -358,7 +360,7 @@ public class FrameTocador extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoSkipFwdMouseClicked
 
     private void sliderVolumeMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderVolumeMouseDragged
-        SliderVolume acao = new SliderVolume();
+        
     }//GEN-LAST:event_sliderVolumeMouseDragged
 
     private void abrirMidiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMidiMouseClicked
@@ -367,27 +369,28 @@ public class FrameTocador extends javax.swing.JFrame {
     }//GEN-LAST:event_abrirMidiMouseClicked
 
     private void sliderVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderVolumeStateChanged
-        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
         JSlider source = (JSlider) evt.getSource();
+        instance.inicializaVolume();
         if (!source.getValueIsAdjusting()) {
             int valor = (int) source.getValue();
             ShortMessage mensagemDeVolume = new ShortMessage();
             for (int i = 0; i < 16; i++) {
                 try {
                     mensagemDeVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, valor);
-                    //obj.getReceptor().send(mensagemDeVolume, -1);
-                } catch (InvalidMidiDataException e1) {
+                    instance.getReceptor().send(mensagemDeVolume, -1);
+                } catch (InvalidMidiDataException e) {
+                    e.printStackTrace();
                 }
             }
-            obj.setVolumeAtual(valor);
+            ArquivoSingleton.getInstance().setVolumeAtual(valor);
         }
     }//GEN-LAST:event_sliderVolumeStateChanged
 
     private void abrirMidiFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abrirMidiFocusGained
-        ArquivoSingleton obj = ArquivoSingleton.getInstance();
-        if (obj.getArqMidi() != null) {
-            labelTempoMusica.setText(obj.getTempoFormatado());
-            labelNomeDaFaixa.setText(obj.getArqMidi().getName());
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
+        if (instance.getArqMidi() != null) {
+            labelNomeDaFaixa.setText(instance.getArqMidi().getName());
         }
     }//GEN-LAST:event_abrirMidiFocusGained
 
