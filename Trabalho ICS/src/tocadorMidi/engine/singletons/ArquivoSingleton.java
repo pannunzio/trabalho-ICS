@@ -39,7 +39,7 @@ public class ArquivoSingleton {
     private Receiver receptor;
     private String tempoFormatado;
     private Boolean isTocando;
-    public Task tarefa;
+    private Integer tamanhoTrilha;
 
     protected ArquivoSingleton() {
         this.setIsTocando(Boolean.FALSE);
@@ -124,28 +124,33 @@ public class ArquivoSingleton {
         this.isTocando = isTocando;
     }
 
-    public Task getTarefa() {
-        return tarefa;
+    public Integer getTamanhoTrilha() {
+        return tamanhoTrilha;
     }
 
-    public void setTarefa(Task tarefa) {
-        this.tarefa = tarefa;
+    public void setTamanhoTrilha(Integer tamanhoTrilha) {
+        this.tamanhoTrilha = tamanhoTrilha;
     }
 
     public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
+        Integer tamTrilha = null;
         if (this.getArqMidi() != null) {
             this.setSequencia(MidiSystem.getSequence(this.getArqMidi()));
 
             this.setSequenciador(MidiSystem.getSequencer());
             this.getSequenciador().setSequence(this.getSequencia());
             this.getSequenciador().open();
+            
+            tamTrilha = (int) this.getSequenciador().getMicrosecondLength()/1000;
+            this.setTamanhoTrilha(tamTrilha);
             this.setIsTocando(Boolean.FALSE);
         }
     }
-    
-    public void closeMidi(){
-        if(this.getArqMidi() != null)
+
+    public void closeMidi() {
+        if (this.getArqMidi() != null) {
             this.getSequenciador().close();
+        }
     }
 
     public void initVolume() {
@@ -159,60 +164,25 @@ public class ArquivoSingleton {
     }
 
     public void inicializaVolume() {
-        ShortMessage msgVolume = new ShortMessage();
-        for (int i = 0; i < 16; i++) {
-            try {
-                msgVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, this.getVolumeAtual());
-                this.getReceptor().send(msgVolume, -1);
-            } catch (InvalidMidiDataException e) {
-                e.printStackTrace();
+        if (this.isTocando) {
+            ShortMessage msgVolume = new ShortMessage();
+            for (int i = 0; i < 16; i++) {
+                try {
+                    msgVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, this.getVolumeAtual());
+                    this.getReceptor().send(msgVolume, -1);
+                } catch (InvalidMidiDataException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
-    
-    public void alteraPosicaoMusica(Long milisegundosAlterados){
-        if(this.getIsTocando() && this.getArqMidi() != null){
+
+    public void alteraPosicaoMusica(Long milisegundosAlterados) {
+        if (this.getIsTocando() && this.getArqMidi() != null) {
             this.setMicrossegundo(instance.getSequenciador().getMicrosecondPosition());
             this.getSequenciador().stop();
             this.getSequenciador().setMicrosecondPosition(instance.getMicrossegundo());
             this.getSequenciador().start();
-        }
-    }
-    
-    public void acaoBarraProgresso(ActionEvent evt){
-        this.setTarefa(new Task());
-        this.getTarefa().addPropertyChangeListener(null);
-        this.getTarefa().execute();
-    }
-    
-     class Task extends SwingWorker<Void, Void> {
-        /*
-         * Main task. Executed in background thread.
-         */
-        @Override
-        public Void doInBackground() {
-            Random random = new Random();
-            int progress = 0;
-            //Initialize progress property.
-            setProgress(0);
-            while (progress < 100) {
-                //Sleep for up to one second.
-                try {
-                    Thread.sleep(random.nextInt(1000));
-                } catch (InterruptedException ignore) {}
-                //Make random progress.
-                progress += random.nextInt(10);
-                setProgress(Math.min(progress, 100));
-            }
-            return null;
-        }
- 
-        /*
-         * Executed in event dispatching thread
-         */
-        @Override
-        public void done() {
-            Toolkit.getDefaultToolkit().beep();
         }
     }
 }

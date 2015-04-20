@@ -124,11 +124,13 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="botaoPlay" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="botaoPause" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="botaoStop" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="botaoPlay" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="botaoPause" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="botaoStop" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <Component id="sliderVolume" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -178,6 +180,8 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botaoPlayMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoPlayActionPerformed"/>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="botaoPlayPropertyChange"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="botaoPause">

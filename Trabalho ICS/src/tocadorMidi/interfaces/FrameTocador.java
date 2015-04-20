@@ -7,16 +7,20 @@ package tocadorMidi.interfaces;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.ShortMessage;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import tocadorMidi.engine.actionListeners.BotaoPause;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
@@ -28,7 +32,7 @@ import tocadorMidi.engine.singletons.ArquivoSingleton;
  *
  * @author mariana
  */
-public class FrameTocador extends javax.swing.JFrame {
+public class FrameTocador extends javax.swing.JFrame implements PropertyChangeListener {
 
     /**
      * Creates new form FrameTocadoe
@@ -101,6 +105,16 @@ public class FrameTocador extends javax.swing.JFrame {
         botaoPlay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoPlayMouseClicked(evt);
+            }
+        });
+        botaoPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoPlayActionPerformed(evt);
+            }
+        });
+        botaoPlay.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                botaoPlayPropertyChange(evt);
             }
         });
 
@@ -262,11 +276,12 @@ public class FrameTocador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(botaoPlay)
-                                .addComponent(botaoPause)
-                                .addComponent(botaoStop)
-                                .addComponent(jLabel1))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(botaoPlay)
+                                    .addComponent(botaoPause)
+                                    .addComponent(botaoStop)))
                             .addComponent(sliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelFormulaCompasso)
@@ -313,26 +328,37 @@ public class FrameTocador extends javax.swing.JFrame {
 
     private void botaoPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPlayMouseClicked
         ArquivoSingleton instance = ArquivoSingleton.getInstance();
+
         if (instance.getArqMidi() != null) {
             botaoPlay.setEnabled(false);
             botaoPause.setEnabled(true);
             botaoStop.setEnabled(true);
-        }
 
-        BotaoPlay acao = new BotaoPlay();
-        try {
-            acao.play();
-            instance.configuraVolume();
-            instance.inicializaVolume();
-            instance.acaoBarraProgresso(new ActionEvent(evt.getSource(), FRAMEBITS, "progress"));
-        } catch (InvalidMidiDataException ex) {
-            Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MidiUnavailableException ex) {
-            Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            BotaoPlay acao = new BotaoPlay();
+            
+            tarefa = new Task();
+            tarefa.addPropertyChangeListener(this);
+            tarefa.execute();
+            try {
+                acao.play();
+                instance.configuraVolume();
+                instance.inicializaVolume();
+            } catch (InvalidMidiDataException ex) {
+                Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MidiUnavailableException ex) {
+                Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_botaoPlayMouseClicked
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressoAudio.setValue(progress);
+        }
+    }
 
     private void botaoPauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoPauseMouseClicked
         if (ArquivoSingleton.getInstance().getArqMidi() != null) {
@@ -369,19 +395,21 @@ public class FrameTocador extends javax.swing.JFrame {
     private void sliderVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderVolumeStateChanged
         ArquivoSingleton instance = ArquivoSingleton.getInstance();
         JSlider source = (JSlider) evt.getSource();
-        instance.inicializaVolume();
-        if (!source.getValueIsAdjusting()) {
-            int valor = (int) source.getValue();
-            ShortMessage mensagemDeVolume = new ShortMessage();
-            for (int i = 0; i < 16; i++) {
-                try {
-                    mensagemDeVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, valor);
-                    instance.getReceptor().send(mensagemDeVolume, -1);
-                } catch (InvalidMidiDataException e) {
-                    e.printStackTrace();
+        if (instance.getIsTocando()) {
+            instance.inicializaVolume();
+            if (!source.getValueIsAdjusting()) {
+                int valor = (int) source.getValue();
+                ShortMessage mensagemDeVolume = new ShortMessage();
+                for (int i = 0; i < 16; i++) {
+                    try {
+                        mensagemDeVolume.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, valor);
+                        instance.getReceptor().send(mensagemDeVolume, -1);
+                    } catch (InvalidMidiDataException e) {
+                        e.printStackTrace();
+                    }
                 }
+                ArquivoSingleton.getInstance().setVolumeAtual(valor);
             }
-            ArquivoSingleton.getInstance().setVolumeAtual(valor);
         }
     }//GEN-LAST:event_sliderVolumeStateChanged
 
@@ -392,7 +420,7 @@ public class FrameTocador extends javax.swing.JFrame {
                 instance.initMidi();
                 labelNomeDaFaixa.setText(instance.getArqMidi().getName());
                 labelTempoMusica.setText(instance.getTempoFormatado());
-                int tempoMax = (int) (instance.getSequenciador().getMicrosecondLength()/1000);
+                int tempoMax = (int) (instance.getSequenciador().getMicrosecondLength() / 1000);
                 progressoAudio = new JProgressBar(0, tempoMax);
                 progressoAudio.setValue(0);
                 progressoAudio.setStringPainted(true);
@@ -423,12 +451,23 @@ public class FrameTocador extends javax.swing.JFrame {
 
     private void progressoAudioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_progressoAudioPropertyChange
         ArquivoSingleton instance = ArquivoSingleton.getInstance();
-        if(evt.getPropertyName().contains("progress")){
+
+        if (evt.getPropertyName().contains("progress")) {
             int progresso = (Integer) evt.getNewValue();
             progressoAudio.setValue(progresso);
         }
 
     }//GEN-LAST:event_progressoAudioPropertyChange
+
+    private void botaoPlayPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_botaoPlayPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoPlayPropertyChange
+
+    private void botaoPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPlayActionPerformed
+        tarefa = new Task();
+        tarefa.addPropertyChangeListener(this);
+        tarefa.execute();
+    }//GEN-LAST:event_botaoPlayActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abrirMidi;
@@ -454,4 +493,34 @@ public class FrameTocador extends javax.swing.JFrame {
     private javax.swing.JSlider sliderVolume;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+    private Task tarefa;
+
+    class Task extends SwingWorker<Void, Void> {
+        /*
+         * Main task. Executed in background thread.
+         */
+
+        @Override
+        public Void doInBackground() {
+            int progress = 0;
+            //Initialize progress property.
+            setProgress(0);
+            if(ArquivoSingleton.getInstance().getArqMidi() != null){
+                while (progress < ArquivoSingleton.getInstance().getTamanhoTrilha()) {
+                    //Sleep for up to one second.
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {/*ignorar*/
+
+                    }
+                    //Make random progress.
+                    progress++;
+                    setProgress(Math.min(progress, 100));
+                }
+            }
+            return null;
+        }
+
+    }
+
 }
