@@ -5,6 +5,8 @@
  */
 package tocadorMidi.interfaces;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -13,13 +15,13 @@ import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.ShortMessage;
+import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.UIManager;
 import tocadorMidi.engine.actionListeners.BotaoPause;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
-import tocadorMidi.engine.actionListeners.BotaoSkipBackward;
-import tocadorMidi.engine.actionListeners.BotaoSkipForward;
 import tocadorMidi.engine.actionListeners.BotaoStop;
+import tocadorMidi.engine.actionListeners.ProgressoAudio;
 import tocadorMidi.engine.singletons.ArquivoSingleton;
 
 /**
@@ -51,8 +53,6 @@ public class FrameTocador extends javax.swing.JFrame {
         botaoPlay = new javax.swing.JButton();
         botaoPause = new javax.swing.JButton();
         botaoStop = new javax.swing.JButton();
-        botaoSkipBkwrd = new javax.swing.JButton();
-        botaoSkipFwd = new javax.swing.JButton();
         sliderVolume = new javax.swing.JSlider();
         labelFormulaCompasso = new javax.swing.JLabel();
         labelMetro = new javax.swing.JLabel();
@@ -67,6 +67,7 @@ public class FrameTocador extends javax.swing.JFrame {
         labelTempoMusica = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         labelInstanteMusica = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -80,6 +81,14 @@ public class FrameTocador extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         labelFaixa.setText("Faixa: ");
 
@@ -106,20 +115,6 @@ public class FrameTocador extends javax.swing.JFrame {
         botaoStop.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botaoStopMouseClicked(evt);
-            }
-        });
-
-        botaoSkipBkwrd.setText("<<");
-        botaoSkipBkwrd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoSkipBkwrdMouseClicked(evt);
-            }
-        });
-
-        botaoSkipFwd.setText(">>");
-        botaoSkipFwd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoSkipFwdMouseClicked(evt);
             }
         });
 
@@ -179,11 +174,24 @@ public class FrameTocador extends javax.swing.JFrame {
             }
         });
 
+        progressoAudio.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                progressoAudioStateChanged(evt);
+            }
+        });
+        progressoAudio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                progressoAudioPropertyChange(evt);
+            }
+        });
+
         labelTempoMusica.setText("00:00:00");
 
         jLabel2.setText("/");
 
         labelInstanteMusica.setText("00:00:00");
+
+        jLabel1.setText("Volume: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -219,20 +227,18 @@ public class FrameTocador extends javax.swing.JFrame {
                                 .addComponent(botaoPause)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(botaoStop)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoSkipBkwrd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoSkipFwd)
+                                .addGap(78, 78, 78)
+                                .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(sliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(labelInstanteMusica)
+                                .addGap(277, 277, 277)
+                                .addComponent(labelInstanteMusica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelTempoMusica))))
+                                .addComponent(labelTempoMusica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(abrirMidi)))
@@ -240,14 +246,14 @@ public class FrameTocador extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelFaixa)
                     .addComponent(labelNomeDaFaixa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(progressoAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTempoMusica)
                     .addComponent(jLabel2)
@@ -260,8 +266,7 @@ public class FrameTocador extends javax.swing.JFrame {
                                 .addComponent(botaoPlay)
                                 .addComponent(botaoPause)
                                 .addComponent(botaoStop)
-                                .addComponent(botaoSkipBkwrd)
-                                .addComponent(botaoSkipFwd))
+                                .addComponent(jLabel1))
                             .addComponent(sliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelFormulaCompasso)
@@ -281,7 +286,7 @@ public class FrameTocador extends javax.swing.JFrame {
                         .addComponent(labelValorTonalidade)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(abrirMidi)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -319,6 +324,7 @@ public class FrameTocador extends javax.swing.JFrame {
             acao.play();
             instance.configuraVolume();
             instance.inicializaVolume();
+            instance.acaoBarraProgresso(new ActionEvent(evt.getSource(), FRAMEBITS, "progress"));
         } catch (InvalidMidiDataException ex) {
             Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -351,16 +357,8 @@ public class FrameTocador extends javax.swing.JFrame {
         acao.Stop();
     }//GEN-LAST:event_botaoStopMouseClicked
 
-    private void botaoSkipBkwrdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSkipBkwrdMouseClicked
-        BotaoSkipBackward acao = new BotaoSkipBackward();
-    }//GEN-LAST:event_botaoSkipBkwrdMouseClicked
-
-    private void botaoSkipFwdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSkipFwdMouseClicked
-        BotaoSkipForward acao = new BotaoSkipForward();
-    }//GEN-LAST:event_botaoSkipFwdMouseClicked
-
     private void sliderVolumeMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderVolumeMouseDragged
-        
+
     }//GEN-LAST:event_sliderVolumeMouseDragged
 
     private void abrirMidiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMidiMouseClicked
@@ -390,19 +388,55 @@ public class FrameTocador extends javax.swing.JFrame {
     private void abrirMidiFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abrirMidiFocusGained
         ArquivoSingleton instance = ArquivoSingleton.getInstance();
         if (instance.getArqMidi() != null) {
-            labelNomeDaFaixa.setText(instance.getArqMidi().getName());
+            try {
+                instance.initMidi();
+                labelNomeDaFaixa.setText(instance.getArqMidi().getName());
+                labelTempoMusica.setText(instance.getTempoFormatado());
+                int tempoMax = (int) (instance.getSequenciador().getMicrosecondLength()/1000);
+                progressoAudio = new JProgressBar(0, tempoMax);
+                progressoAudio.setValue(0);
+                progressoAudio.setStringPainted(true);
+            } catch (InvalidMidiDataException ex) {
+                Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MidiUnavailableException ex) {
+                Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_abrirMidiFocusGained
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (ArquivoSingleton.getInstance().getArqMidi() != null) {
+            ArquivoSingleton.getInstance().closeMidi();
+            System.out.println("close Midi");
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void progressoAudioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_progressoAudioStateChanged
+
+    }//GEN-LAST:event_progressoAudioStateChanged
+
+    private void progressoAudioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_progressoAudioPropertyChange
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
+        if(evt.getPropertyName().contains("progress")){
+            int progresso = (Integer) evt.getNewValue();
+            progressoAudio.setValue(progresso);
+        }
+
+    }//GEN-LAST:event_progressoAudioPropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abrirMidi;
     private javax.swing.JButton botaoPause;
     private javax.swing.JButton botaoPlay;
-    private javax.swing.JButton botaoSkipBkwrd;
-    private javax.swing.JButton botaoSkipFwd;
     private javax.swing.JButton botaoStop;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelAndamento;
     private javax.swing.JLabel labelArmaduraTonalidade;

@@ -19,11 +19,12 @@ public class BotaoPause {
     }
     
     public void Pause(){
-        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
         try {
             
-            obj.setMicrossegundo(obj.getSequenciador().getMicrosecondPosition());
-            obj.getSequenciador().stop();
+            instance.setMicrossegundo(instance.getSequenciador().getMicrosecondPosition());
+            instance.getSequenciador().stop();
+            instance.setIsTocando(Boolean.FALSE);
 
         } catch (Exception e) {
             e.printStackTrace();

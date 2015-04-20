@@ -7,6 +7,7 @@ package tocadorMidi.engine.actionListeners;
 
 import java.io.File;
 import java.io.IOException;
+import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -24,22 +25,22 @@ public class BotaoPlay {
     }
 
     public void play() throws InvalidMidiDataException, IOException, MidiUnavailableException {
-        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
         try {
-            if (obj.getArqMidi() != null) {
-                obj.setSequencia(MidiSystem.getSequence(obj.getArqMidi()));
+            if (instance.getArqMidi() != null) {
+                instance.setSequencia(MidiSystem.getSequence(instance.getArqMidi()));
             }
+            instance.setSequenciador(MidiSystem.getSequencer());
+            instance.getSequenciador().setSequence(instance.getSequencia());
+            instance.getSequenciador().open();
             
-            obj.setSequenciador(MidiSystem.getSequencer());
-            obj.getSequenciador().setSequence(obj.getSequencia());
-            obj.getSequenciador().open();
+            if(instance.getTick() != null)
+                instance.getSequenciador().setLoopStartPoint(instance.getTick());
+            if(instance.getMicrossegundo() != null)
+                instance.getSequenciador().setMicrosecondPosition(instance.getMicrossegundo());
             
-            if(obj.getTick() != null)
-                obj.getSequenciador().setLoopStartPoint(obj.getTick());
-            if(obj.getMicrossegundo() != null)
-                obj.getSequenciador().setMicrosecondPosition(obj.getMicrossegundo());
-            
-            obj.getSequenciador().start();
+            instance.getSequenciador().start();
+            instance.setIsTocando(Boolean.TRUE);
 
         } catch (Exception e) {
             e.printStackTrace();

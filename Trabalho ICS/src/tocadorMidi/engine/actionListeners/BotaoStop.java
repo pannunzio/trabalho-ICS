@@ -17,11 +17,12 @@ public class BotaoStop {
     }
 
     public void Stop() {
-        ArquivoSingleton obj = ArquivoSingleton.getInstance();
+        ArquivoSingleton instance = ArquivoSingleton.getInstance();
         try {
 
-            obj.setMicrossegundo(null);
-            obj.getSequenciador().stop();
+            instance.setMicrossegundo(null);
+            instance.getSequenciador().stop();
+            instance.setIsTocando(Boolean.FALSE);
 
         } catch (Exception e) {
             e.printStackTrace();

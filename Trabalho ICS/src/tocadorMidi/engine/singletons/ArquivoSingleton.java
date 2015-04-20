@@ -5,9 +5,13 @@
  */
 package tocadorMidi.engine.singletons;
 
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -15,6 +19,8 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
+import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -32,8 +38,11 @@ public class ArquivoSingleton {
     private Integer volumeAtual;
     private Receiver receptor;
     private String tempoFormatado;
+    private Boolean isTocando;
+    public Task tarefa;
 
     protected ArquivoSingleton() {
+        this.setIsTocando(Boolean.FALSE);
     }
 
     public static ArquivoSingleton getInstance() {
@@ -107,28 +116,40 @@ public class ArquivoSingleton {
         this.tempoFormatado = tempoFormatado;
     }
 
+    public Boolean getIsTocando() {
+        return isTocando;
+    }
+
+    public void setIsTocando(Boolean isTocando) {
+        this.isTocando = isTocando;
+    }
+
+    public Task getTarefa() {
+        return tarefa;
+    }
+
+    public void setTarefa(Task tarefa) {
+        this.tarefa = tarefa;
+    }
+
     public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
         if (this.getArqMidi() != null) {
-//            Long milissegundos = null;
-//            Long minutos = null;
-//            Long segundos = null;
-
             this.setSequencia(MidiSystem.getSequence(this.getArqMidi()));
 
             this.setSequenciador(MidiSystem.getSequencer());
             this.getSequenciador().setSequence(this.getSequencia());
             this.getSequenciador().open();
-//
-//            segundos = TimeUnit.MILLISECONDS.toSeconds(milissegundos);
-//            minutos = TimeUnit.MILLISECONDS.toMinutes(milissegundos);
-//            milissegundos -= TimeUnit.SECONDS.toMillis(segundos);
-//
-//            setTempoFormatado(String.format("%02d:%02d:%d", minutos, segundos, milissegundos));
+            this.setIsTocando(Boolean.FALSE);
         }
+    }
+    
+    public void closeMidi(){
+        if(this.getArqMidi() != null)
+            this.getSequenciador().close();
     }
 
     public void initVolume() {
-        this.setVolumeAtual(75);
+        this.setVolumeAtual(50);
         this.setReceptor(null);
     }
 
@@ -146,6 +167,52 @@ public class ArquivoSingleton {
             } catch (InvalidMidiDataException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    
+    public void alteraPosicaoMusica(Long milisegundosAlterados){
+        if(this.getIsTocando() && this.getArqMidi() != null){
+            this.setMicrossegundo(instance.getSequenciador().getMicrosecondPosition());
+            this.getSequenciador().stop();
+            this.getSequenciador().setMicrosecondPosition(instance.getMicrossegundo());
+            this.getSequenciador().start();
+        }
+    }
+    
+    public void acaoBarraProgresso(ActionEvent evt){
+        this.setTarefa(new Task());
+        this.getTarefa().addPropertyChangeListener(null);
+        this.getTarefa().execute();
+    }
+    
+     class Task extends SwingWorker<Void, Void> {
+        /*
+         * Main task. Executed in background thread.
+         */
+        @Override
+        public Void doInBackground() {
+            Random random = new Random();
+            int progress = 0;
+            //Initialize progress property.
+            setProgress(0);
+            while (progress < 100) {
+                //Sleep for up to one second.
+                try {
+                    Thread.sleep(random.nextInt(1000));
+                } catch (InterruptedException ignore) {}
+                //Make random progress.
+                progress += random.nextInt(10);
+                setProgress(Math.min(progress, 100));
+            }
+            return null;
+        }
+ 
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+            Toolkit.getDefaultToolkit().beep();
         }
     }
 }
