@@ -417,8 +417,7 @@ public class FrameTocador extends javax.swing.JFrame implements ActionListener, 
                 instance.initMidi();
                 labelNomeDaFaixa.setText(instance.getArqMidi().getName());
                 labelTempoMusica.setText(instance.getTempoFormatado());
-                int tempoMax = (int) (instance.getSequenciador().getMicrosecondLength() / 1000);
-                progressoAudio = new JProgressBar(0, tempoMax);
+                progressoAudio = new JProgressBar(0, 100);
                 progressoAudio.setValue(0);
                 progressoAudio.setStringPainted(true);
             } catch (InvalidMidiDataException ex) {
@@ -507,10 +506,12 @@ public class FrameTocador extends javax.swing.JFrame implements ActionListener, 
         @Override
         public Void doInBackground() {
             int progress = 0;
+            int total = (int)(ArquivoSingleton.getInstance().getSequenciador().getMicrosecondLength()) / 1000;
+            int parcial = 0;
             //Initialize progress property.
             setProgress(0);
             if(ArquivoSingleton.getInstance().getArqMidi() != null){
-                while (progress < ArquivoSingleton.getInstance().getTamanhoTrilha()) {
+                while (progress <= 100) {
                     //Sleep for up to one second.
                     try {
                         Thread.sleep(1000);
@@ -518,8 +519,10 @@ public class FrameTocador extends javax.swing.JFrame implements ActionListener, 
 
                     }
                     //Make random progress.
-                    progress++;
+                    parcial = (int) (ArquivoSingleton.getInstance().getSequenciador().getMicrosecondPosition()) / 10;
+                    progress = parcial/total;
                     setProgress(Math.min(progress, 100));
+                    progressoAudio.updateUI();
                 }
             }
             return null;
