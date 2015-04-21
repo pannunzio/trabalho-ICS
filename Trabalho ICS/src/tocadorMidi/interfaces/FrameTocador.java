@@ -25,14 +25,13 @@ import javax.swing.UIManager;
 import tocadorMidi.engine.actionListeners.BotaoPause;
 import tocadorMidi.engine.actionListeners.BotaoPlay;
 import tocadorMidi.engine.actionListeners.BotaoStop;
-import tocadorMidi.engine.actionListeners.ProgressoAudio;
 import tocadorMidi.engine.singletons.ArquivoSingleton;
 
 /**
  *
  * @author mariana
  */
-public class FrameTocador extends javax.swing.JFrame implements PropertyChangeListener {
+public class FrameTocador extends javax.swing.JFrame implements ActionListener, PropertyChangeListener {
 
     /**
      * Creates new form FrameTocadoe
@@ -86,11 +85,11 @@ public class FrameTocador extends javax.swing.JFrame implements PropertyChangeLi
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
             }
         });
 
@@ -336,9 +335,6 @@ public class FrameTocador extends javax.swing.JFrame implements PropertyChangeLi
 
             BotaoPlay acao = new BotaoPlay();
             
-            tarefa = new Task();
-            tarefa.addPropertyChangeListener(this);
-            tarefa.execute();
             try {
                 acao.play();
                 instance.configuraVolume();
@@ -353,6 +349,7 @@ public class FrameTocador extends javax.swing.JFrame implements PropertyChangeLi
         }
     }//GEN-LAST:event_botaoPlayMouseClicked
 
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
@@ -450,7 +447,6 @@ public class FrameTocador extends javax.swing.JFrame implements PropertyChangeLi
     }//GEN-LAST:event_progressoAudioStateChanged
 
     private void progressoAudioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_progressoAudioPropertyChange
-        ArquivoSingleton instance = ArquivoSingleton.getInstance();
 
         if (evt.getPropertyName().contains("progress")) {
             int progresso = (Integer) evt.getNewValue();
@@ -464,6 +460,7 @@ public class FrameTocador extends javax.swing.JFrame implements PropertyChangeLi
     }//GEN-LAST:event_botaoPlayPropertyChange
 
     private void botaoPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPlayActionPerformed
+        botaoPlay.setEnabled(false);
         tarefa = new Task();
         tarefa.addPropertyChangeListener(this);
         tarefa.execute();
@@ -494,6 +491,13 @@ public class FrameTocador extends javax.swing.JFrame implements PropertyChangeLi
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private Task tarefa;
+
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        tarefa = new Task();
+        tarefa.addPropertyChangeListener(this);
+        tarefa.execute();
+    }
 
     class Task extends SwingWorker<Void, Void> {
         /*
