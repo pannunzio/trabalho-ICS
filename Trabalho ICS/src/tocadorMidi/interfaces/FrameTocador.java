@@ -435,6 +435,7 @@ public class FrameTocador extends javax.swing.JFrame{
                 instance.tempoTotalMusica();
                 labelNomeDaFaixa.setText(instance.getArqMidi().getName());
                 labelTempoMusica.setText(instance.tempoEmString(instance.getTempoMusica()));
+                labelValorMetro.setText(instance.getFormulaDeCompasso(instance.getSequencia().getTracks()[0]));
             } catch (InvalidMidiDataException ex) {
                 Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -501,7 +502,7 @@ public class FrameTocador extends javax.swing.JFrame{
         class Task extends SwingWorker<Void, Void> {
 
             @Override
-            public Void doInBackground() {
+            public Void doInBackground() throws InvalidMidiDataException {
                 ArquivoSingleton instance = ArquivoSingleton.getInstance();
                 int progress = 0;
                 int total = (int) (instance.getSequenciador().getMicrosecondLength()) / 1000;
@@ -513,6 +514,7 @@ public class FrameTocador extends javax.swing.JFrame{
                         try {
                             Thread.sleep(1000);
                             labelInstanteMusica.setText(instance.tempoEmString(instance.tempoAtualMusica()));
+//                            labelValorCompasso.setText(instance.getFormulaCompasso());
                         } catch (InterruptedException e) {
                             System.out.println("Interrupted Exception");
                         }

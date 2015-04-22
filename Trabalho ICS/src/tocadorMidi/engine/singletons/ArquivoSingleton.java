@@ -5,6 +5,7 @@
  */
 package tocadorMidi.engine.singletons;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -16,14 +17,19 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  *
@@ -41,9 +47,9 @@ public class ArquivoSingleton {
     private Integer volumeAtual;
     private Receiver receptor;
     private Calendar tempoMusica;
-    private String tempoFormatado;
     private Boolean isTocando;
     private Integer tamanhoTrilha;
+    private String formulaCompasso;
 
     protected ArquivoSingleton() {
         this.setIsTocando(Boolean.FALSE);
@@ -112,14 +118,6 @@ public class ArquivoSingleton {
         this.receptor = receptor;
     }
 
-    public String getTempoFormatado() {
-        return tempoFormatado;
-    }
-
-    public void setTempoFormatado(String tempoFormatado) {
-        this.tempoFormatado = tempoFormatado;
-    }
-
     public Boolean getIsTocando() {
         return isTocando;
     }
@@ -144,6 +142,30 @@ public class ArquivoSingleton {
         this.tempoMusica = tempoMusica;
     }
 
+    
+    final int FORMULA_DE_COMPASSO = 0x58;
+
+    public String getFormulaDeCompasso(Track trilha) {
+        int p = 1;
+        int q = 1;
+
+        Dimension d = new Dimension(p, q);
+        
+        for (int i = 0; i < trilha.size(); i++) {
+            MidiMessage m = trilha.get(i).getMessage();
+            if (m instanceof MetaMessage) {
+                if (((MetaMessage) m).getType() == FORMULA_DE_COMPASSO) {
+                    MetaMessage mm = (MetaMessage) m;
+                    byte[] data = mm.getData();
+                    p = data[0];
+                    q = data[1];
+                }
+            }
+        }
+        return p + "/" + q*q;
+    }
+
+
     public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
         Integer tamTrilha = null;
         if (this.getArqMidi() != null) {
@@ -152,8 +174,8 @@ public class ArquivoSingleton {
             this.setSequenciador(MidiSystem.getSequencer());
             this.getSequenciador().setSequence(this.getSequencia());
             this.getSequenciador().open();
-            
-            tamTrilha = (int) this.getSequenciador().getMicrosecondLength()/1000;
+
+            tamTrilha = (int) this.getSequenciador().getMicrosecondLength() / 1000;
             this.setTamanhoTrilha(tamTrilha);
             this.setIsTocando(Boolean.FALSE);
         }
@@ -197,24 +219,24 @@ public class ArquivoSingleton {
             this.getSequenciador().start();
         }
     }
-    
-    public void tempoTotalMusica(){
+
+    public void tempoTotalMusica() {
         Long tempo = this.getSequenciador().getMicrosecondLength();
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(tempo/1000);
-        
+        cal.setTimeInMillis(tempo / 1000);
+
         this.setTempoMusica(cal);
     }
-    
-    public Calendar tempoAtualMusica(){
+
+    public Calendar tempoAtualMusica() {
         Long tempo = this.getSequenciador().getMicrosecondPosition();
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(tempo/1000);
-        
+        cal.setTimeInMillis(tempo / 1000);
+
         return cal;
     }
-    
-    public String tempoEmString(Calendar tempo){
+
+    public String tempoEmString(Calendar tempo) {
         SimpleDateFormat formato = new SimpleDateFormat("mm:ss");
         System.out.println(formato.format(tempo.getTime()));
         return formato.format(tempo.getTime());
