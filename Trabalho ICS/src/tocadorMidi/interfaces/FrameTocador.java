@@ -435,6 +435,20 @@ public class FrameTocador extends javax.swing.JFrame{
                 instance.tempoTotalMusica();
                 labelNomeDaFaixa.setText(instance.getArqMidi().getName());
                 labelTempoMusica.setText(instance.tempoEmString(instance.getTempoMusica()));
+                
+                float duracao = instance.getSequencia().getMicrosecondLength()/1000000;
+                int  resolucao   = instance.getSequencia().getResolution();
+	        long totaltiques = instance.getSequenciador().getTickLength();
+                
+                float durtique       = (float)duracao/totaltiques;
+	        float durseminima    = durtique*resolucao;
+	        float bpm            = 60/durseminima;
+	        int   totalseminimas = (int)(duracao/durseminima);
+                
+                labelValorMetro.setText(String.valueOf(bpm));
+                labelValorAndamento.setText(String.valueOf(Math.round(bpm)));
+                labelValorTonalidade.setText(ArquivoSingleton.getTonalidade(instance.getSequencia().getTracks()[0]));
+                
             } catch (InvalidMidiDataException ex) {
                 Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
