@@ -9,6 +9,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javafx.concurrent.Task;
@@ -37,6 +40,7 @@ public class ArquivoSingleton {
     private Long microssegundo;
     private Integer volumeAtual;
     private Receiver receptor;
+    private Calendar tempoMusica;
     private String tempoFormatado;
     private Boolean isTocando;
     private Integer tamanhoTrilha;
@@ -132,6 +136,14 @@ public class ArquivoSingleton {
         this.tamanhoTrilha = tamanhoTrilha;
     }
 
+    public Calendar getTempoMusica() {
+        return tempoMusica;
+    }
+
+    public void setTempoMusica(Calendar tempoMusica) {
+        this.tempoMusica = tempoMusica;
+    }
+
     public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
         Integer tamTrilha = null;
         if (this.getArqMidi() != null) {
@@ -184,5 +196,27 @@ public class ArquivoSingleton {
             this.getSequenciador().setMicrosecondPosition(instance.getMicrossegundo());
             this.getSequenciador().start();
         }
+    }
+    
+    public void tempoTotalMusica(){
+        Long tempo = this.getSequenciador().getMicrosecondLength();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(tempo/1000);
+        
+        this.setTempoMusica(cal);
+    }
+    
+    public Calendar tempoAtualMusica(){
+        Long tempo = this.getSequenciador().getMicrosecondPosition();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(tempo/1000);
+        
+        return cal;
+    }
+    
+    public String tempoEmString(Calendar tempo){
+        SimpleDateFormat formato = new SimpleDateFormat("mm:ss");
+        System.out.println(formato.format(tempo.getTime()));
+        return formato.format(tempo.getTime());
     }
 }

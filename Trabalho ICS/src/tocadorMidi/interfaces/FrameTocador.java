@@ -432,8 +432,9 @@ public class FrameTocador extends javax.swing.JFrame{
         if (instance.getArqMidi() != null) {
             try {
                 instance.initMidi();
+                instance.tempoTotalMusica();
                 labelNomeDaFaixa.setText(instance.getArqMidi().getName());
-                labelTempoMusica.setText(instance.getTempoFormatado());
+                labelTempoMusica.setText(instance.tempoEmString(instance.getTempoMusica()));
             } catch (InvalidMidiDataException ex) {
                 Logger.getLogger(FrameTocador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -452,7 +453,7 @@ public class FrameTocador extends javax.swing.JFrame{
     }//GEN-LAST:event_formWindowClosing
 
     private void botaoPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPlayActionPerformed
-        ProgressBarDemo progresso = new ProgressBarDemo();
+        BarraProgresso progresso = new BarraProgresso();
         progresso.actionPerformed(evt);
     }//GEN-LAST:event_botaoPlayActionPerformed
 
@@ -489,9 +490,8 @@ public class FrameTocador extends javax.swing.JFrame{
     private javax.swing.JSlider sliderVolume;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    private Date relogio;
 
-    class ProgressBarDemo extends JPanel
+    class BarraProgresso extends JPanel
             implements ActionListener,
             PropertyChangeListener {
 
@@ -502,21 +502,21 @@ public class FrameTocador extends javax.swing.JFrame{
 
             @Override
             public Void doInBackground() {
+                ArquivoSingleton instance = ArquivoSingleton.getInstance();
                 int progress = 0;
-                int total = (int) (ArquivoSingleton.getInstance().getSequenciador().getMicrosecondLength()) / 1000;
+                int total = (int) (instance.getSequenciador().getMicrosecondLength()) / 1000;
                 int parcial = 0;
-                //Initialize progress property.
+                
                 setProgress(0);
-                if (ArquivoSingleton.getInstance().getArqMidi() != null) {
+                if (instance.getArqMidi() != null) {
                     while (progress <= 100) {
-                        //Sleep for up to one second.
                         try {
                             Thread.sleep(1000);
-                        } catch (InterruptedException e) {/*ignorar*/
-
+                            labelInstanteMusica.setText(instance.tempoEmString(instance.tempoAtualMusica()));
+                        } catch (InterruptedException e) {
+                            System.out.println("Interrupted Exception");
                         }
-                        //Make random progress.
-                        parcial = (int) (ArquivoSingleton.getInstance().getSequenciador().getMicrosecondPosition()) / 10;
+                        parcial = (int) (instance.getSequenciador().getMicrosecondPosition()) / 10;
                         progress = parcial / total;
                         setProgress(Math.min(progress, 100));
                         progressoAudio.updateUI();
@@ -526,7 +526,7 @@ public class FrameTocador extends javax.swing.JFrame{
             }
         }
 
-        public ProgressBarDemo() {
+        public BarraProgresso() {
             super(new BorderLayout());
 
             progressoAudio = new JProgressBar(0, 100);
@@ -558,7 +558,7 @@ public class FrameTocador extends javax.swing.JFrame{
 
         private JPanel createAndShowGUI() {
      
-            JComponent newContentPane = new ProgressBarDemo();
+            JComponent newContentPane = new BarraProgresso();
             newContentPane.setOpaque(true);
             return (JPanel) newContentPane;
         }
