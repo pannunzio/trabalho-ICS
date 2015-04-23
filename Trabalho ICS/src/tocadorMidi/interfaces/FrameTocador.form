@@ -217,7 +217,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="labelFormulaCompasso">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Formula de Compasso: "/>
+        <Property name="text" type="java.lang.String" value="Compasso: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelMetro">

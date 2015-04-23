@@ -143,7 +143,7 @@ public class FrameTocador extends javax.swing.JFrame{
             }
         });
 
-        labelFormulaCompasso.setText("Formula de Compasso: ");
+        labelFormulaCompasso.setText("Compasso: ");
 
         labelMetro.setText("Metro: ");
 
@@ -433,9 +433,24 @@ public class FrameTocador extends javax.swing.JFrame{
             try {
                 instance.initMidi();
                 instance.tempoTotalMusica();
+                
+                long duracao     = instance.getSequencia().getMicrosecondLength()/1000000;
+		int  resolucao   = instance.getSequencia().getResolution();
+		long totaltiques = instance.getSequencia().getTickLength();
+		
+		
+		float durtique       = (float)duracao/totaltiques;
+		float durseminima    = durtique*resolucao;
+		float bpm            = 60/durseminima;
+		int   totalseminimas = (int)(duracao/durseminima);
+                
+                labelValorCompasso.setText("--");
+                labelValorTonalidade.setText(instance.getTonalidade(instance.getSequencia().getTracks()[0]));
+                labelValorAndamento.setText(String.valueOf((int) Math.round(bpm)));
                 labelNomeDaFaixa.setText(instance.getArqMidi().getName());
                 labelTempoMusica.setText(instance.tempoEmString(instance.getTempoMusica()));
-                
+                labelValorMetro.setText(instance.getFormulaDeCompasso(instance.getSequencia().getTracks()[0]));
+
                 float duracao = instance.getSequencia().getMicrosecondLength()/1000000;
                 int  resolucao   = instance.getSequencia().getResolution();
 	        long totaltiques = instance.getSequenciador().getTickLength();
@@ -515,7 +530,7 @@ public class FrameTocador extends javax.swing.JFrame{
         class Task extends SwingWorker<Void, Void> {
 
             @Override
-            public Void doInBackground() {
+            public Void doInBackground() throws InvalidMidiDataException {
                 ArquivoSingleton instance = ArquivoSingleton.getInstance();
                 int progress = 0;
                 int total = (int) (instance.getSequenciador().getMicrosecondLength()) / 1000;
@@ -527,6 +542,7 @@ public class FrameTocador extends javax.swing.JFrame{
                         try {
                             Thread.sleep(1000);
                             labelInstanteMusica.setText(instance.tempoEmString(instance.tempoAtualMusica()));
+//                            labelValorCompasso.setText(instance.getFormulaCompasso());
                         } catch (InterruptedException e) {
                             System.out.println("Interrupted Exception");
                         }

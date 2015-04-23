@@ -5,6 +5,7 @@
  */
 package tocadorMidi.engine.singletons;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -27,6 +29,7 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  *
@@ -44,10 +47,10 @@ public class ArquivoSingleton {
     private Integer volumeAtual;
     private Receiver receptor;
     private Calendar tempoMusica;
-    private String tempoFormatado;
     private Boolean isTocando;
     private Integer tamanhoTrilha;
-    private static final int MENSAGEM_TONALIDADE = 0x59;
+    private String formulaCompasso;
+    private static final int MENSAGEM_TONALIDADE = 0x59;  
 
     protected ArquivoSingleton() {
         this.setIsTocando(Boolean.FALSE);
@@ -116,14 +119,6 @@ public class ArquivoSingleton {
         this.receptor = receptor;
     }
 
-    public String getTempoFormatado() {
-        return tempoFormatado;
-    }
-
-    public void setTempoFormatado(String tempoFormatado) {
-        this.tempoFormatado = tempoFormatado;
-    }
-
     public Boolean getIsTocando() {
         return isTocando;
     }
@@ -148,6 +143,30 @@ public class ArquivoSingleton {
         this.tempoMusica = tempoMusica;
     }
 
+    
+    final int FORMULA_DE_COMPASSO = 0x58;
+
+    public String getFormulaDeCompasso(Track trilha) {
+        int p = 1;
+        int q = 1;
+
+        Dimension d = new Dimension(p, q);
+        
+        for (int i = 0; i < trilha.size(); i++) {
+            MidiMessage m = trilha.get(i).getMessage();
+            if (m instanceof MetaMessage) {
+                if (((MetaMessage) m).getType() == FORMULA_DE_COMPASSO) {
+                    MetaMessage mm = (MetaMessage) m;
+                    byte[] data = mm.getData();
+                    p = data[0];
+                    q = data[1];
+                }
+            }
+        }
+        return p + "/" + q*q;
+    }
+
+
     public void initMidi() throws InvalidMidiDataException, IOException, MidiUnavailableException {
         Integer tamTrilha = null;
         if (this.getArqMidi() != null) {
@@ -156,8 +175,8 @@ public class ArquivoSingleton {
             this.setSequenciador(MidiSystem.getSequencer());
             this.getSequenciador().setSequence(this.getSequencia());
             this.getSequenciador().open();
-            
-            tamTrilha = (int) this.getSequenciador().getMicrosecondLength()/1000;
+
+            tamTrilha = (int) this.getSequenciador().getMicrosecondLength() / 1000;
             this.setTamanhoTrilha(tamTrilha);
             this.setIsTocando(Boolean.FALSE);
         }
@@ -201,24 +220,24 @@ public class ArquivoSingleton {
             this.getSequenciador().start();
         }
     }
-    
-    public void tempoTotalMusica(){
+
+    public void tempoTotalMusica() {
         Long tempo = this.getSequenciador().getMicrosecondLength();
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(tempo/1000);
-        
+        cal.setTimeInMillis(tempo / 1000);
+
         this.setTempoMusica(cal);
     }
-    
-    public Calendar tempoAtualMusica(){
+
+    public Calendar tempoAtualMusica() {
         Long tempo = this.getSequenciador().getMicrosecondPosition();
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(tempo/1000);
-        
+        cal.setTimeInMillis(tempo / 1000);
+
         return cal;
     }
-    
-    public String tempoEmString(Calendar tempo){
+
+    public String tempoEmString(Calendar tempo) {
         SimpleDateFormat formato = new SimpleDateFormat("mm:ss");
         System.out.println(formato.format(tempo.getTime()));
         return formato.format(tempo.getTime());
@@ -288,5 +307,70 @@ public class ArquivoSingleton {
       }
       return stonalidade;
     }
+<<<<<<< HEAD
+    
+    public String getTonalidade(Track trilha) throws InvalidMidiDataException
+    {       
+       String stonalidade = "";
+       for(int i=0; i<trilha.size(); i++)
+       { MidiMessage m = trilha.get(i).getMessage();
+       
+              
+       if(((MetaMessage)m).getType() == MENSAGEM_TONALIDADE)    
+       {
+            MetaMessage mm        = (MetaMessage)m;
+            byte[]     data       = mm.getData();
+            byte       tonalidade = data[0];
+            byte       maior      = data[1];
 
+            String       smaior = "Maior";
+            if(maior==1) smaior = "Menor";
+
+            if(smaior.equalsIgnoreCase("Maior"))
+            {
+                switch (tonalidade)
+                {
+                    case -7: stonalidade = "Dób Maior"; break;
+                    case -6: stonalidade = "Solb Maior"; break;
+                    case -5: stonalidade = "Réb Maior"; break;
+                    case -4: stonalidade = "Láb Maior"; break;
+                    case -3: stonalidade = "Mib Maior"; break;
+                    case -2: stonalidade = "Sib Maior"; break;
+                    case -1: stonalidade = "Fá Maior"; break;
+                    case  0: stonalidade = "Dó Maior"; break;
+                    case  1: stonalidade = "Sol Maior"; break;
+                    case  2: stonalidade = "Ré Maior"; break;
+                    case  3: stonalidade = "Lá Maior"; break;
+                    case  4: stonalidade = "Mi Maior"; break;
+                    case  5: stonalidade = "Si Maior"; break;
+                    case  6: stonalidade = "Fá# Maior"; break;
+                    case  7: stonalidade = "Dó# Maior"; break;
+                }
+            }
+
+            else if(smaior.equalsIgnoreCase("Menor"))
+            {
+                switch (tonalidade)
+                {
+                    case -7: stonalidade = "Láb Menor"; break;
+                    case -6: stonalidade = "Mib Menor"; break;
+                    case -5: stonalidade = "Sib Menor"; break;
+                    case -4: stonalidade = "Fá Menor"; break;
+                    case -3: stonalidade = "Dó Menor"; break;
+                    case -2: stonalidade = "Sol Menor"; break;
+                    case -1: stonalidade = "Ré Menor"; break;
+                    case  0: stonalidade = "Lá Menor"; break;
+                    case  1: stonalidade = "Mi Menor"; break;
+                    case  2: stonalidade = "Si Menor"; break;
+                    case  3: stonalidade = "Fá# Menor"; break;
+                    case  4: stonalidade = "Dó# Menor"; break;
+                    case  5: stonalidade = "Sol# Menor"; break;
+                    case  6: stonalidade = "Ré# Menor"; break;
+                    case  7: stonalidade = "Lá# Menor"; break;
+                }
+            }
+         }
+      }
+      return stonalidade;
+    }
 }
