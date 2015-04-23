@@ -18,7 +18,10 @@ import java.util.concurrent.TimeUnit;
 import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
+<<<<<<< HEAD
 import javax.sound.midi.MidiEvent;
+=======
+>>>>>>> master
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -49,8 +52,12 @@ public class ArquivoSingleton {
     private Calendar tempoMusica;
     private Boolean isTocando;
     private Integer tamanhoTrilha;
+<<<<<<< HEAD
     private String formulaCompasso;
     private static final int MENSAGEM_TONALIDADE = 0x59;  
+=======
+    private static final int MENSAGEM_TONALIDADE = 0x59;
+>>>>>>> master
 
     protected ArquivoSingleton() {
         this.setIsTocando(Boolean.FALSE);
@@ -241,7 +248,73 @@ public class ArquivoSingleton {
         SimpleDateFormat formato = new SimpleDateFormat("mm:ss");
         System.out.println(formato.format(tempo.getTime()));
         return formato.format(tempo.getTime());
+    }  
+    
+    public static final String getTonalidade(Track trilha) throws InvalidMidiDataException
+    {       
+       String stonalidade = "";
+       for(int i=0; i<trilha.size(); i++)
+       { MidiMessage m = trilha.get(i).getMessage();
+       
+              
+       if(((MetaMessage)m).getType() == MENSAGEM_TONALIDADE)    
+       {
+            MetaMessage mm        = (MetaMessage)m;
+            byte[]     data       = mm.getData();
+            byte       tonalidade = data[0];
+            byte       maior      = data[1];
+
+            String       smaior = "Maior";
+            if(maior==1) smaior = "Menor";
+
+            if(smaior.equalsIgnoreCase("Maior"))
+            {
+                switch (tonalidade)
+                {
+                    case -7: stonalidade = "Dób Maior"; break;
+                    case -6: stonalidade = "Solb Maior"; break;
+                    case -5: stonalidade = "Réb Maior"; break;
+                    case -4: stonalidade = "Láb Maior"; break;
+                    case -3: stonalidade = "Mib Maior"; break;
+                    case -2: stonalidade = "Sib Maior"; break;
+                    case -1: stonalidade = "Fá Maior"; break;
+                    case  0: stonalidade = "Dó Maior"; break;
+                    case  1: stonalidade = "Sol Maior"; break;
+                    case  2: stonalidade = "Ré Maior"; break;
+                    case  3: stonalidade = "Lá Maior"; break;
+                    case  4: stonalidade = "Mi Maior"; break;
+                    case  5: stonalidade = "Si Maior"; break;
+                    case  6: stonalidade = "Fá# Maior"; break;
+                    case  7: stonalidade = "Dó# Maior"; break;
+                }
+            }
+
+            else if(smaior.equalsIgnoreCase("Menor"))
+            {
+                switch (tonalidade)
+                {
+                    case -7: stonalidade = "Láb Menor"; break;
+                    case -6: stonalidade = "Mib Menor"; break;
+                    case -5: stonalidade = "Sib Menor"; break;
+                    case -4: stonalidade = "Fá Menor"; break;
+                    case -3: stonalidade = "Dó Menor"; break;
+                    case -2: stonalidade = "Sol Menor"; break;
+                    case -1: stonalidade = "Ré Menor"; break;
+                    case  0: stonalidade = "Lá Menor"; break;
+                    case  1: stonalidade = "Mi Menor"; break;
+                    case  2: stonalidade = "Si Menor"; break;
+                    case  3: stonalidade = "Fá# Menor"; break;
+                    case  4: stonalidade = "Dó# Menor"; break;
+                    case  5: stonalidade = "Sol# Menor"; break;
+                    case  6: stonalidade = "Ré# Menor"; break;
+                    case  7: stonalidade = "Lá# Menor"; break;
+                }
+            }
+         }
+      }
+      return stonalidade;
     }
+<<<<<<< HEAD
     
     public String getTonalidade(Track trilha) throws InvalidMidiDataException
     {       
@@ -307,4 +380,7 @@ public class ArquivoSingleton {
       }
       return stonalidade;
     }
+=======
+
+>>>>>>> master
 }
