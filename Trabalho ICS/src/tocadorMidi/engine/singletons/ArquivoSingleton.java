@@ -18,10 +18,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.concurrent.Task;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
-<<<<<<< HEAD
 import javax.sound.midi.MidiEvent;
-=======
->>>>>>> master
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -52,12 +49,8 @@ public class ArquivoSingleton {
     private Calendar tempoMusica;
     private Boolean isTocando;
     private Integer tamanhoTrilha;
-<<<<<<< HEAD
     private String formulaCompasso;
     private static final int MENSAGEM_TONALIDADE = 0x59;  
-=======
-    private static final int MENSAGEM_TONALIDADE = 0x59;
->>>>>>> master
 
     protected ArquivoSingleton() {
         this.setIsTocando(Boolean.FALSE);
@@ -380,7 +373,4 @@ public class ArquivoSingleton {
       }
       return stonalidade;
     }
-=======
-
->>>>>>> master
 }
